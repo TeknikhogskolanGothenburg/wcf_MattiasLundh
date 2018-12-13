@@ -1,0 +1,31 @@
+﻿
+@model CarServiceClient.CarRentalService.Booking[]
+@{
+    ViewBag.Title = "Bookings";
+}
+
+<div>@ViewBag.Message</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Car Id</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Customer Id</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <th scope="row">@booking.ID</th>
+                <td>@booking.CarID</td>
+                <td>@booking.StartTime</td>
+                <td>@booking.EndTime</td>
+                <td>@booking.CustomerID</td>
+                <td><button class="btnDeleteBooking" value="@booking.ID">X</button>Delete</td>
+            </tr>
+        }
+    </tbody>
+</table>

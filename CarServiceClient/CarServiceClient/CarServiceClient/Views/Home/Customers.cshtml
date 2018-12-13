@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Customers";
+}
+
+<h2>Customers</h2>
+
+<button id="btnViewCustomers">View Customers</button>
+<div id="main-container">
+
+</div>
+<h3>Register User</h3>
+@using (Html.BeginForm("AddCustomer", "Home", FormMethod.Post))
+{
+    <label for="FirstName">First Name</label>
+    <input id="FirstName" name="FirstName" type="text" required />
+    <label for="LastName">Last Name</label>
+    <input id="LastName" name="LastName" type="text" required />
+    <label for="Tel">Telephone</label>
+    <input id="Tel" name="Tel" type="text" required />
+    <label for="Email">Email</label>
+    <input id="Email" name="Email" type="text" required />
+    <button type="submit">Register New Customer</button>
+}
+
+
+<script>
+    window.HostURL = "http://localhost:63728/"
+
+    document.querySelector("#btnViewCustomers").addEventListener("click", async () => {
+        let content = await getPartialCustomers();
+        let container = document.querySelector("#main-container")
+        container.innerHTML = content;
+        loadCustomerDeleteEvents();
+    });
+
+    async function getPartialCustomers() {
+        let url = HostURL + "Home/GetCustomers";
+        response = await fetch(url,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "text/html"
+                },
+            })
+        return await response.text();
+    }
+
+    function loadCustomerDeleteEvents() {
+        document.querySelectorAll(".btnDeleteCustomer").forEach(b => {
+            b.addEventListener("click", async (event) => {
+                DeleteCustomer(event.target.value);
+                event.target.parentNode.parentNode.remove();
+            });
+        })
+    }
+
+    async function DeleteCustomer(id) {
+        let url = HostURL + "Home/RemoveCustomer?id=" + id;
+        response = await fetch(url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+        return await response.text();
+    }
+</script>

@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Cars";
+}
+
+<h2>Cars</h2>
+
+<label for="from">From:</label>
+<input id="from" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+<label for="to">To:</label>
+<input id="to" type="date" value="@DateTime.Now.AddDays(7).ToString("yyyy-MM-dd")" />
+<button id="btnViewAvailableCars">View Available Cars</button>
+<br />
+<label for="fromSingle">CarId:</label>
+<input id="fromSingle" type="number" value="" />
+<button id="btnViewCar">View Car</button>
+
+<div id="main-container">
+
+</div>
+<h3>Register Car</h3>
+@using (Html.BeginForm("AddCar", "Home", FormMethod.Post))
+{
+    <label for="RegistrationNumber">Registration Number</label>
+    <input id="RegistrationNumber" name="RegistrationNumber" type="text" required />
+    <label for="Brand">Brand</label>
+    <input id="Brand" name="Brand" type="text" required />
+    <label for="Model">Model</label>
+    <input id="Model" name="Model" type="text" required />
+    <label for="Year">Year</label>
+    <input id="Year" name="Year" type="text" required />
+    <button type="submit">Register New Car</button>
+}
+
+<script>
+    window.HostURL = "http://localhost:63728/"
+
+    document.querySelector("#btnViewAvailableCars").addEventListener("click", async () => {
+        let from = document.querySelector("#from").value;
+        let to = document.querySelector("#to").value;
+        if ("" != from && "" != to) {
+            let content = await getPartialCars(from, to);
+            let container = document.querySelector("#main-container")
+            container.innerHTML = content;
+            loadCarDeleteEvents();
+            loadCarAvaliabilityButtonEvents();
+        }
+    });
+
+    document.querySelector("#btnViewCar").addEventListener("click", async () => {
+        let carId = document.querySelector("#fromSingle").value;
+        if ("" != carId) {
+            let content = await getCarById(carId);
+            let container = document.querySelector("#main-container")
+            container.innerHTML = content;
+            loadCarDeleteEvents();
+            loadCarAvaliabilityButtonEvents();
+        }
+    });
+
+    async function getCarById(id) {
+        let url = HostURL + "Home/GetCarById?carId=" + id
+        response = await fetch(url,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "text/html"
+                },
+            })
+        return await response.text();
+    }
+
+    async function getPartialCars(from, to) {
+        let url = HostURL + "Home/GetAvaliableCars?from=" + from + "&to=" + to
+        response = await fetch(url,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "text/html"
+                },
+            })
+        return await response.text();
+    }
+
+    function loadCarAvaliabilityButtonEvents() {
+        document.querySelectorAll(".btnCheckinCar").forEach(b => {
+            b.addEventListener("click", async (event) => {
+                checkinCar(event.target.value);
+            });
+        })
+
+        document.querySelectorAll(".btnCheckoutCar").forEach(b => {
+            b.addEventListener("click", async (event) => {
+                checkoutCar(event.target.value);
+            });
+        })
+    }
+
+    function loadCarDeleteEvents() {
+        document.querySelectorAll(".btnDeleteCar").forEach(b => {
+            b.addEventListener("click", async (event) => {
+                DeleteCar(event.target.value);
+                event.target.parentNode.parentNode.remove();
+            });
+        })
+    }
+
+    async function DeleteCar(id) {
+        let url = HostURL + "Home/RemoveCar?id=" + id;
+        response = await fetch(url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+        return await response.text();
+    }
+
+    async function checkoutCar(id) {
+        let url = HostURL + "Home/SetAvailability?available=false&carid=" + id
+        response = await fetch(url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+        return await response.text();
+    }
+    async function checkinCar(id) {
+        let url = HostURL + "Home/SetAvailability?available=true&carid=" + id;
+        response = await fetch(url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+        return await response.text();
+    }
+</script>

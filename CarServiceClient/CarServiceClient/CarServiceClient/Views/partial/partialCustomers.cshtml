@@ -1,0 +1,30 @@
+﻿
+@model CarServiceClient.CarRentalService.Customer[]
+@{
+    ViewBag.Title = "Customers";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">FirstName</th>
+            <th scope="col">LastName</th>
+            <th scope="col">Telephone</th>
+            <th scope="col">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <th scope="row">@customer.ID</th>
+                <td>@customer.FirstName</td>
+                <td>@customer.LastName</td>
+                <td>@customer.Tel</td>
+                <td>@customer.Email</td>
+                <td><button class="btnDeleteCustomer" value="@customer.ID">X</button>Delete</td>
+            </tr>
+        }
+    </tbody>
+</table>

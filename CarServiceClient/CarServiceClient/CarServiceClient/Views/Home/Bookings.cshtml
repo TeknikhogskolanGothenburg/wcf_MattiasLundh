@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Bookings";
+}
+
+<h2>Bookings</h2>
+<div>
+    <label for="bookingId">Id: </label>
+    <input id="bookingId" type="number" />
+    <select id="bookingType" onchange="updateButtonText(this.value)">
+        <option value="car">Car</option>
+        <option value="customer">Customer</option>
+    </select>
+    <button id="btnViewBookings">View car Bookings</button>
+</div>
+
+<div id="main-container">
+
+</div>
+<h3>Book Car</h3>
+@using (Html.BeginForm("AddBooking", "Home", FormMethod.Post))
+{
+    <label for="CustomerID">Customer Id</label>
+    <input id="CustomerID" name="CustomerID" type="text" required />
+    <label for="CarID">Car Id</label>
+    <input id="CarID" name="CarID" type="text" required />
+    <label for="StartTime">Start time</label>
+    <input id="StartTime" name="StartTime" type="date" required />
+    <label for="EndTime">End Time</label>
+    <input id="EndTime" name="EndTime" type="date" required />
+    <button type="submit">Book Car</button>
+}
+
+
+<script>
+    window.HostURL = "http://localhost:63728/"
+
+    document.querySelector("#btnViewBookings").addEventListener("click", async () => {
+        let bookingId = document.querySelector("#bookingId").value;
+        let bookingType = document.querySelector("#bookingType").value;
+        let content = await getPartialBookings(bookingId, bookingType);
+        let container = document.querySelector("#main-container")
+        container.innerHTML = content;
+        loadBookingDeleteEvents();
+    });
+
+    async function getPartialBookings(Id, bookingType) {
+        let url = HostURL + "Home/GetBookings?Id=" + Id + "&bookingType=" + bookingType;
+        response = await fetch(url,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "text/html"
+                },
+            })
+        return await response.text();
+    }
+
+    function loadBookingDeleteEvents() {
+        document.querySelectorAll(".btnDeleteBooking").forEach(b => {
+            b.addEventListener("click", async (event) => {
+                DeleteBooking(event.target.value);
+                event.target.parentNode.parentNode.remove();
+            });
+        })
+    }
+
+    async function DeleteBooking(id) {
+        let url = HostURL + "Home/RemoveBooking?bookingId=" + id;
+        response = await fetch(url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+        return await response.text();
+    }
+
+    function updateButtonText(text) {
+        let button = document.querySelector("#btnViewBookings");
+        button.textContent = "View " + text + " Bookings";
+    }
+</script>

@@ -1,0 +1,98 @@
+﻿
+@model CarServiceClient.Models.Description
+
+<div>
+    <h1>Documentation</h1>
+    <h2>Solution navigation guide</h2>
+    <div>Content</div>
+</div>
+<ul>
+    <li>
+        <a href="#task1">Skapa minst en tjänst via WCF som implementerar minst två end-points</a>
+    </li>
+    <li>
+        <a href="#task2">
+            Visa att ni behärskar de olika kontrakten Service Contract, Operation Contract, Data Contract,
+            Data Member och Message Contract
+        </a>
+    </li>
+    <li>
+        <a href="#task3">Om ni använder arv, visa att ni behärskar KnownTypes</a>
+    </li>
+
+    <li>
+        <a href="#task4">
+            Kunna hantera Exceptions
+        </a>
+    </li>
+    <li>
+        <a href="#task5">Kunna visa att ni kan hantera säkerhet så som autentisering</a>
+    </li>
+    <li>
+        <a href="#task6">Skapa ett Rest-API för någon del av tjänsten</a>
+    </li>
+    <li>
+        <strong><a href="#description">description.txt</a></strong>
+    </li>
+
+</ul>
+<div id="task1">
+    <h3>Skapa minst en tjänst via WCF som implementerar minst två end-points</h3>
+    <p>endpoints are defined in the wcfCarServiceHost project through the app.config file</p>
+    <img src="~/images/SolutionHostHighlight.png" />
+    <img src="~/images/appConfigPath.png" />
+</div>
+<div id="task2">
+    <h3>
+        Visa att ni behärskar de olika kontrakten Service Contract, Operation Contract, Data Contract,
+        Data Member och Message Contract
+    </h3>
+    <div style="display: flex">
+        <div style="padding: 10px;">
+            <p>Service contracts and Operation contracts are used in the service interfaces</p>
+            <img src="~/images/ServiceAndOperationContract.png" />
+        </div>
+        <div style="padding: 10px;">
+            <p>Data contract and Data member are used on the domain classes</p>
+            <img src="~/images/DataContract.png" />
+        </div>
+        <div style="padding: 10px;">
+            <p>Use of the Message contract is demonstrated in the <strong>GetCar</strong> operation</p>
+            <img src="~/images/MessageContract.png" />
+        </div>
+    </div>
+</div>
+<div id="task3">
+    <h3>Om ni använder arv, visa att ni behärskar KnownTypes</h3>
+    <p>Data types using inheritance is accepted in the function <strong>GetBookingsByRelation</strong> in the <strong>ICarRentalAdministrationService</strong> class. KnowType is applied to <strong>baseEntity</strong></p>
+    <img src="~/images/KnownTypes.png" />
+</div>
+<div id="task4">
+    <h3>Kunna hantera Exceptions</h3>
+    <p>Exceptions are thrown from the operations: <strong>GetCar</strong>, <strong>GetAvaliableCars</strong> and <strong>GetBookingsByRelation</strong>. These are handled on the sever side.</p>
+    <img src="~/images/SolutionServiceHighlight.png" />
+
+</div>
+<div id="task5">
+    <h3>Kunna visa att ni kan hantera säkerhet så som autentisering</h3>
+    <p>Keys can be used to authenticate requests, these are used in the <strong>GetCar</strong> operation. </p>
+    <p>Security is set to the default values of the system defined bindings, i.e. Message Security for wshttpBinding and Transport Security for netTcpBinding</p>
+    <img src="~/images/SolutionServiceHighlight.png" />
+
+</div>
+<div id="task6">
+    <h3>Skapa ett Rest-API för någon del av tjänsten</h3>
+    <p>A rest API Service for Customers can be hosted from the <strong>RestHost</strong> project. The Service configuration is customized with code in <strong>Program.cs</strong></p>
+    <div style="display: flex">
+        <div>
+            <img src="~/images/RestHostService.png" />
+        </div>
+        <div style="padding: 10px;">
+            <img src="~/images/RestHost.png" />
+        </div>
+    </div>
+</div>
+<div id="description">
+    <h3 style="margin:50px 0;">description.txt</h3>
+    <pre>@Model.document</pre>
+</div>

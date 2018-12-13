@@ -1,0 +1,23 @@
+Mattias Lundh
+
+
+Project decision making
+
+*Services
+One service has been created that inherits 2 different contracts. This decision has been made in order to get a feel
+	for what is possible, in this case the operations are divided into the roles of Administartor and Customer.
+	Consumers of the service will now get the operations bundled into these two service client categories via the 
+	WSDL generated proxy.
+
+*Exceptions
+Exceptions with custom made detail objects have been created, these exceptions are handled on the client side. in 
+	this project one such exception is thrown when a non-excistent data record is asked for, the exception will 
+	be caught by the client and its custom details will be shown on the UI.
+
+*Bindings
+wsHttpBinding is avaliable for all of the opertions to utilize security features that are absent in the basicHttpBinding.
+	Security is applied on the wsHttpBinding default Message level.
+
+* SOAP wrapper and collections
+There was trouble with setting up message contracts that wrapped collections of data, in the end I decided to reduce the 
+	complexity such that the service sends only sigular entities with message wrapping.
